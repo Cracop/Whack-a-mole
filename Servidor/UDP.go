@@ -36,7 +36,7 @@ func multicast(addr *net.UDPAddr) {
 			return
 		}
 		fmt.Println("Sent multicast message:", message)
-		time.Sleep(1 * time.Second) // Send message every 1 second
+		time.Sleep(10 * time.Second) // Send message every 1 second
 	}
 
 }

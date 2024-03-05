@@ -5,9 +5,10 @@ import (
 )
 
 func main() {
-
+	// log.Println("Aqui llega")
 	a := app.New()
 	// w := a.NewWindow("VistaJugador")
+
 	c := CONNECTION{}
 
 	//TODO: hacer que el custom theme funcione

@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	jugadores    = make(map[string]struct{})
+	jugadores    = make(map[string]PLAYER)
 	jugadoresMux sync.Mutex
 )
 

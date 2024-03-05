@@ -8,7 +8,7 @@ import (
 )
 
 // Handle TCP connections
-func handleTCPConnections(listener net.Listener, jugadoresMux *sync.Mutex, jugadores *map[string]struct{}) {
+func handleTCPConnections(listener net.Listener, jugadoresMux *sync.Mutex, jugadores *map[string]PLAYER) {
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -19,7 +19,7 @@ func handleTCPConnections(listener net.Listener, jugadoresMux *sync.Mutex, jugad
 	}
 }
 
-func handleTCPConnection(conn net.Conn, jugadoresMux *sync.Mutex, jugadores *map[string]struct{}) {
+func handleTCPConnection(conn net.Conn, jugadoresMux *sync.Mutex, jugadores *map[string]PLAYER) {
 	defer conn.Close()
 
 	for {
@@ -37,7 +37,7 @@ func handleTCPConnection(conn net.Conn, jugadoresMux *sync.Mutex, jugadores *map
 
 		if separated_data[0] == "r" {
 			fmt.Println("Registro:", separated_data[1]+remoteAddr)
-			addPlayer(separated_data[1], remoteAddr, jugadoresMux, jugadores)
+			addPlayer(separated_data[1], remoteAddr, jugadoresMux, jugadores, &conn)
 
 		} else if separated_data[0] == "c" {
 			fmt.Println("Casilla: " + separated_data[1])

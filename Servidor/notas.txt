@@ -1,0 +1,37 @@
+Indicarle al juagador la casilla (visualmente)
+tener la bd de jugadores sus puntajes y algun identificadores
+Tener el puntaje máximo al final del juego, decirar
+
+
+
+Indicacion Visual (local)
+quitar jugadores de la bd al final del juego (local)
+lock y unlock para el primero que le atine (tcp)
+indicar el ganador (desconectando a todos) (udp)
+indicarle al jugador su puntaje ()
+
+jugador presiona casilla y 
+le avisa al servidor si le dio
+La bd solamente guarda registro de quienes lo atinaron
+jugador - tcp (si le atina) - servidor revisa quien llegó primero (mux)
+servidor tiene scoreboard interno y el cuanto uno gane, cancela el broadcast anterior
+y avisa por udp quién ganó
+
+jugador 
+
+
+menos complicados pau
+jugador: comparar si le atinó y mandar tcp
+jugador: recibir respuesta si fue el primero o no y modificar contador interno
+jugador: cuando se conecta por primera vez recibe su puntaje durante el juego
+
+
+indicacion visual de casilla con monstruo
+
+
+servidor: asignar el punto al primero
+servidor: indicar quién ganó (y empezar nuevo juego)
+servidor: entrada y salida de jugadores
+
+
+mas complicado rod
