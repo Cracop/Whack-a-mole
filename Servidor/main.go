@@ -37,11 +37,9 @@ func main() {
 		panic(err)
 	}
 
-	defer tcpListener.Close()
+	// defer tcpListener.Close()
 
 	fmt.Println("Server listening in port", PortTCP)
-
-	go handleTCPConnections(tcpListener, &mem)
 
 	// Resolve multicast address
 	addr, err := net.ResolveUDPAddr("udp", multicastAddr)
@@ -52,6 +50,8 @@ func main() {
 
 	go multicast(addr, &mem)
 
-	// Block main goroutine to keep server running
-	select {}
+	handleTCPConnections(tcpListener, &mem)
+
+	// // Block main goroutine to keep server running
+	// select {}
 }

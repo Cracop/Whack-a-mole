@@ -61,14 +61,23 @@ func (p *POGO) joinMulticast() {
 }
 
 func (p *POGO) whack() {
-	c := rand.IntN(1)
-	fmt.Println(c)
+	c := rand.IntN(2)
+	fmt.Println("Voy a mandar mi success")
+	message := ""
 	if c == 0 {
-		message := "c/success"
-		p.TCPconn.Write([]byte(message))
+		message = "c/success"
+	} else {
+		message = "c/fail"
 	}
+	fmt.Println("Ya lo mandé y ahora lo voy a leer")
 
-	_, err := p.TCPconn.Read(p.buffer)
+	_, err := p.TCPconn.Write([]byte(message))
+	if err != nil {
+		fmt.Println("Error writing:", err)
+		return
+	}
+	fmt.Println(message)
+	_, err = p.TCPconn.Read(p.buffer)
 
 	if err != nil {
 		fmt.Println("Error reading:", err)

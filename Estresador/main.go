@@ -10,7 +10,7 @@ func main() {
 	udpAddress := "224.0.0.1:9999"
 	baseName := "POGO"
 
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 1; i++ {
 		newName := baseName + strconv.Itoa(i)
 		p := POGO{}
 
