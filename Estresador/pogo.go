@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"net"
-	"strconv"
 	"time"
 )
 
@@ -15,8 +14,9 @@ type POGO struct {
 	tcpAddress string
 	udpAddress string
 	UDPconn    *net.UDPConn
-	monster    int
+	monster    string
 	buffer     []byte
+	over       bool
 }
 
 func (p *POGO) login() {
@@ -30,6 +30,11 @@ func (p *POGO) login() {
 	message := fmt.Sprintf("r/%s", p.name)
 	p.TCPconn.Write([]byte(message))
 	fmt.Println("TCP package sent:", message)
+}
+
+func (p *POGO) logout() {
+	p.TCPconn.Close()
+
 }
 
 func (p *POGO) joinMulticast() {
@@ -50,26 +55,31 @@ func (p *POGO) joinMulticast() {
 	for {
 		buffer := make([]byte, 1024)
 		n, _, err := p.UDPconn.ReadFromUDP(buffer)
+
 		if err != nil {
 			fmt.Println("Error reading multicast packet:", err)
 			return
 		}
-		p.monster, _ = strconv.Atoi(string(buffer[:n]))
-		// fmt.Println(p.monster)
+		p.monster = string(buffer[:n])
+		if p.monster[0] == 'w' {
+			p.over = true
+			return
+		}
+		fmt.Println(p.monster)
 		// fmt.Println("Received multicast message:", strconv.Itoa(p.monster))
 	}
 }
 
 func (p *POGO) whack() {
-	c := rand.IntN(2)
-	fmt.Println("Voy a mandar mi success")
+	c := rand.IntN(1)
+	// fmt.Println("Voy a mandar mi success")
 	message := ""
 	if c == 0 {
 		message = "c/success"
 	} else {
 		message = "c/fail"
 	}
-	fmt.Println("Ya lo mandé y ahora lo voy a leer")
+	// fmt.Println("Ya lo mandé y ahora lo voy a leer")
 
 	_, err := p.TCPconn.Write([]byte(message))
 	if err != nil {
@@ -101,11 +111,20 @@ func (p *POGO) run(name string, tcpAddress string, udpAddress string) {
 	p.buffer = make([]byte, 1024)
 	// fmt.Println(p.name)
 	p.login()
+	// fmt.Println("Update received!")
 	go p.joinMulticast()
 
 	for {
+
 		p.whack()
 		time.Sleep(1 * time.Second)
+		// if !p.over {
+
+		// }
+
+		// Perform actions needed when an update is received
+
+		// break
 	}
 
 }

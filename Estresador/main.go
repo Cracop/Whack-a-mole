@@ -12,7 +12,7 @@ func main() {
 
 	for i := 0; i < 1; i++ {
 		newName := baseName + strconv.Itoa(i)
-		p := POGO{}
+		p := POGO{over: false}
 
 		go p.run(newName, tcpAddress, udpAddress)
 	}

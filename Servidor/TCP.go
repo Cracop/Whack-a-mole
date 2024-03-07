@@ -28,7 +28,7 @@ func handleTCPConnection(conn net.Conn, mem *MEMORY) {
 		n, err := conn.Read(buffer)
 		// fmt.Println("Acabo de leer el tcp")
 		if err != nil {
-			fmt.Println("Error reading:", err)
+			fmt.Println("Error reading1:", err)
 			return
 		}
 
@@ -48,7 +48,16 @@ func handleTCPConnection(conn net.Conn, mem *MEMORY) {
 			// conn.Write([]byte(message))
 		}
 		message = fmt.Sprintf("%v", mem.jugadores[remoteAddr].score)
+		// fmt.Println(message)
 		conn.Write([]byte(message))
+
+		if mem.jugadores[remoteAddr].score > 4 {
+			// mem.winner <- mem.jugadores[remoteAddr].nombre
+			mem.winner = mem.jugadores[remoteAddr].nombre
+			fmt.Println(mem.jugadores[remoteAddr].nombre + " ganó")
+			return
+		}
+
 	}
 
 }

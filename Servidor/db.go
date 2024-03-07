@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"strconv"
-	"sync"
 )
 
 func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
@@ -45,6 +44,10 @@ func addPoint(ipAddress string, mem *MEMORY) {
 
 }
 
-func removePlayers(jugadoresMux *sync.Mutex, jugadores *map[string]PLAYER) {
+// func winAndFlush() {
 
-}
+// }
+
+// func removePlayer(mem *MEMORY) {
+
+// }

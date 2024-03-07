@@ -6,18 +6,12 @@ import (
 	"sync"
 )
 
-var (
-	jugadores    = make(map[string]PLAYER)
-	jugadoresMux sync.Mutex
-	gotPoint     = false
-	pointMux     sync.Mutex
-)
-
 type MEMORY struct {
 	jugadores    map[string]PLAYER
 	jugadoresMux sync.Mutex
 	gotPoint     bool
 	pointMux     sync.Mutex
+	winner       string
 }
 
 func main() {
@@ -27,6 +21,8 @@ func main() {
 		gotPoint:     false,
 		jugadoresMux: sync.Mutex{},
 		pointMux:     sync.Mutex{},
+		winner:       "NULL",
+		// over: make(chan bool),
 	}
 
 	PortTCP := ":49999"
