@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"math/rand"
+	"math/rand/v2"
 	"net"
 	"strconv"
 	"time"
 )
 
-func multicast(addr *net.UDPAddr) {
+func multicast(addr *net.UDPAddr, mem *MEMORY) {
 	// Create UDP connection
 	conn, err := net.DialUDP("udp", nil, addr)
 	if err != nil {
@@ -19,24 +18,25 @@ func multicast(addr *net.UDPAddr) {
 
 	defer conn.Close()
 
-	log.Println("Cell tapped:", addr.String())
-
 	for {
 
-		// Seed the random number generator
-		rand.Seed(time.Now().UnixNano())
-
 		// Generate a random number between 0 and 8
-		mole := rand.Intn(9) // Generates a random number between 0 and 8
+		mole := rand.IntN(9) // Generates a random number between 0 and 8
 
-		message := "Hello from UDP multicast! " + strconv.Itoa(mole)
+		// message := "Hello from UDP multicast! " + strconv.Itoa(mole)
+		message := strconv.Itoa(mole)
+		mem.pointMux.Lock()
+		mem.gotPoint = false
 		_, err := conn.Write([]byte(message))
 		if err != nil {
 			fmt.Println("Error sending multicast packet:", err)
 			return
 		}
-		fmt.Println("Sent multicast message:", message)
-		time.Sleep(10 * time.Second) // Send message every 1 second
+		// fmt.Println("Sent multicast message:", message)
+		// fmt.Println(message)
+		mem.pointMux.Unlock()
+		time.Sleep(3 * time.Second) // Send message every 1 second
+
 	}
 
 }

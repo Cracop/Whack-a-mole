@@ -29,7 +29,7 @@ jugador: cuando se conecta por primera vez recibe su puntaje durante el juego
 indicacion visual de casilla con monstruo
 
 
-servidor: asignar el punto al primero
+servidor: asignar el punto al primero - listo
 servidor: indicar quién ganó (y empezar nuevo juego)
 servidor: entrada y salida de jugadores
 

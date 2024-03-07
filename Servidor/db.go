@@ -1,26 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"sync"
 )
 
-func addPlayer(nombre string, ipAddress string, jugadoresMux *sync.Mutex, jugadores *map[string]PLAYER, conn *net.Conn) {
+func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
 
 	player := PLAYER{
-		conn:    *conn,
-		nombre:  nombre,
-		score:   0,
-		casilla: 10,
+		conn:      *conn,
+		nombre:    nombre,
+		score:     0,
+		casilla:   10,
+		ipAddress: ipAddress,
 	}
 
 	jugadoresMux.Lock()
-	(*jugadores)[ipAddress] = player
+	(mem.jugadores)[ipAddress] = player
 	jugadoresMux.Unlock()
-	mapString := fmt.Sprintf("%v", *jugadores)
+	// mapString := fmt.Sprintf("%v", mem.jugadores)
 
-	fmt.Println(mapString)
+	// fmt.Println(mapString)
 }
 
 func removePlayers(jugadoresMux *sync.Mutex, jugadores *map[string]PLAYER) {

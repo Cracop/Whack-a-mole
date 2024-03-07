@@ -9,9 +9,25 @@ import (
 var (
 	jugadores    = make(map[string]PLAYER)
 	jugadoresMux sync.Mutex
+	gotPoint     = false
+	pointMux     sync.Mutex
 )
 
+type MEMORY struct {
+	jugadores    map[string]PLAYER
+	jugadoresMux sync.Mutex
+	gotPoint     bool
+	pointMux     sync.Mutex
+}
+
 func main() {
+
+	mem := MEMORY{
+		jugadores:    make(map[string]PLAYER),
+		gotPoint:     false,
+		jugadoresMux: sync.Mutex{},
+		pointMux:     sync.Mutex{},
+	}
 
 	PortTCP := ":49999"
 	multicastAddr := "224.0.0.1:9999"
@@ -25,7 +41,7 @@ func main() {
 
 	fmt.Println("Server listening in port", PortTCP)
 
-	go handleTCPConnections(tcpListener, &jugadoresMux, &jugadores)
+	go handleTCPConnections(tcpListener, &mem)
 
 	// Resolve multicast address
 	addr, err := net.ResolveUDPAddr("udp", multicastAddr)
@@ -34,7 +50,7 @@ func main() {
 		return
 	}
 
-	go multicast(addr)
+	go multicast(addr, &mem)
 
 	// Block main goroutine to keep server running
 	select {}
