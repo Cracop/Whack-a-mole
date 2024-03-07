@@ -66,7 +66,7 @@ func (p *POGO) joinMulticast() {
 			p.over = true
 			return
 		}
-		fmt.Println(p.monster)
+		// fmt.Println(p.monster)
 		// fmt.Println("Received multicast message:", strconv.Itoa(p.monster))
 	}
 }
@@ -84,14 +84,14 @@ func (p *POGO) whack() {
 
 	_, err := p.TCPconn.Write([]byte(message))
 	if err != nil {
-		fmt.Println("Error writing:", err)
+		// fmt.Println("Error writing:", err)
 		return
 	}
-	fmt.Println(message)
+	// fmt.Println(message)
 	_, err = p.TCPconn.Read(p.buffer)
 
 	if err != nil {
-		fmt.Println("Error reading:", err)
+		// fmt.Println("Error reading:", err)
 		return
 	}
 
@@ -117,8 +117,14 @@ func (p *POGO) run(name string, tcpAddress string, udpAddress string) {
 
 	for {
 
-		p.whack()
-		time.Sleep(1 * time.Second)
+		if !p.over {
+			p.whack()
+			time.Sleep(1 * time.Second)
+		} else {
+			// fmt.Println("Finito")
+			return
+		}
+
 		// if !p.over {
 
 		// }

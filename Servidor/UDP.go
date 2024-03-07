@@ -21,7 +21,7 @@ func multicast(addr *net.UDPAddr, mem *MEMORY) {
 	for {
 
 		if mem.winner == "NULL" {
-			fmt.Println("No hay ganador:", mem.winner)
+			// fmt.Println("No hay ganador:", mem.winner)
 			// Generate a random number between 0 and 8
 			mole := rand.IntN(9) // Generates a random number between 0 and 8
 			// message := "Hello from UDP multicast! " + strconv.Itoa(mole)
@@ -44,7 +44,7 @@ func multicast(addr *net.UDPAddr, mem *MEMORY) {
 				return
 
 			}
-			fmt.Println(message)
+			return
 		}
 
 		// fmt.Println("Sent multicast message:", mem.winner)

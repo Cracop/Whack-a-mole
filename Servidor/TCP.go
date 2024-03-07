@@ -51,7 +51,7 @@ func handleTCPConnection(conn net.Conn, mem *MEMORY) {
 		// fmt.Println(message)
 		conn.Write([]byte(message))
 
-		if mem.jugadores[remoteAddr].score > 2 {
+		if mem.jugadores[remoteAddr].score > 1 {
 			// mem.winner <- mem.jugadores[remoteAddr].nombre
 			mem.winner = mem.jugadores[remoteAddr].nombre
 			fmt.Println(mem.jugadores[remoteAddr].nombre + " ganó")
