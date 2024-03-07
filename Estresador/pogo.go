@@ -62,6 +62,7 @@ func (p *POGO) joinMulticast() {
 		}
 		p.monster = string(buffer[:n])
 		if p.monster[0] == 'w' {
+			fmt.Println(p.monster)
 			p.over = true
 			return
 		}
