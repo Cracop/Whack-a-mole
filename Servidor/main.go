@@ -11,6 +11,7 @@ type MEMORY struct {
 	jugadoresMux sync.Mutex
 	gotPoint     bool
 	pointMux     sync.Mutex
+	winnerMux    sync.Mutex
 	winner       string
 }
 

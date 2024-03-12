@@ -38,7 +38,7 @@ func handleTCPConnection(conn net.Conn, mem *MEMORY) {
 		var message string
 
 		if separated_data[0] == "r" {
-			fmt.Println("Registro:", separated_data[1]+remoteAddr)
+			// fmt.Println("Registro:", separated_data[1]+remoteAddr)
 			addPlayer(separated_data[1], remoteAddr, mem, &conn)
 			//el problema está aquí
 
@@ -47,16 +47,26 @@ func handleTCPConnection(conn net.Conn, mem *MEMORY) {
 			addPoint(remoteAddr, mem)
 			// conn.Write([]byte(message))
 		}
+		mem.jugadoresMux.Lock()
 		message = fmt.Sprintf("%v", mem.jugadores[remoteAddr].score)
 		// fmt.Println(message)
 		conn.Write([]byte(message))
 
-		if mem.jugadores[remoteAddr].score > 1 {
+		if mem.jugadores[remoteAddr].score > 4 {
 			// mem.winner <- mem.jugadores[remoteAddr].nombre
 			mem.winner = mem.jugadores[remoteAddr].nombre
-			fmt.Println(mem.jugadores[remoteAddr].nombre + " ganó")
+			// fmt.Println(mem.jugadores[remoteAddr].nombre + " ganó")
+			mem.jugadoresMux.Unlock()
 			return
 		}
+		mem.jugadoresMux.Unlock()
+
+		mem.winnerMux.Lock()
+		if mem.winner != "NULL" {
+			mem.winnerMux.Unlock()
+			return
+		}
+		mem.winnerMux.Unlock()
 
 	}
 

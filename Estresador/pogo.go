@@ -17,19 +17,28 @@ type POGO struct {
 	monster    string
 	buffer     []byte
 	over       bool
+	elapsed    []float64 // Array to store elapsed times
+	register   []float64
 }
 
-func (p *POGO) login() {
+func (p *POGO) login() error {
 	var err error
 	p.TCPconn, err = net.Dial("tcp", p.tcpAddress) // Replace with the target server and port
 	if err != nil {
 		fmt.Println("TCP send error:", err)
-		return
+		return err
 	}
 
 	message := fmt.Sprintf("r/%s", p.name)
 	p.TCPconn.Write([]byte(message))
+	start := time.Now()
+	_, _ = p.TCPconn.Read(p.buffer)
+	elapsed := time.Since(start)
+	seconds := elapsed.Seconds()
+	// fmt.Println("Time elapsed in seconds:", seconds)
+	p.register = append(p.register, seconds)
 	// fmt.Println("TCP package sent:", message)
+	return nil
 }
 
 func (p *POGO) logout() {
@@ -62,8 +71,9 @@ func (p *POGO) joinMulticast() {
 		}
 		p.monster = string(buffer[:n])
 		if p.monster[0] == 'w' {
-			fmt.Println(p.monster)
+			// fmt.Println(p.monster)
 			p.over = true
+			time.Sleep(10 * time.Second)
 			return
 		}
 		// fmt.Println(p.monster)
@@ -97,7 +107,8 @@ func (p *POGO) whack() {
 	}
 	elapsed := time.Since(start)
 	seconds := elapsed.Seconds()
-	fmt.Println("Time elapsed in seconds:", seconds)
+	// fmt.Println("Time elapsed in seconds:", seconds)
+	p.elapsed = append(p.elapsed, seconds)
 	// receivedData := string(p.buffer[:n])
 	// fmt.Println(receivedData)
 
@@ -114,12 +125,17 @@ func (p *POGO) run(name string, tcpAddress string, udpAddress string) {
 	p.udpAddress = udpAddress
 	p.buffer = make([]byte, 1024)
 	// fmt.Println(p.name)
-	p.login()
+	err := p.login()
+	if err != nil {
+		// fmt.Println("Error reading:", err)
+		return
+	}
+	defer p.logout()
 	// fmt.Println("Update received!")
 	go p.joinMulticast()
 
 	for {
-
+		// fmt.Println("start iteration")
 		if !p.over {
 			p.whack()
 			time.Sleep(1 * time.Second)
@@ -127,13 +143,11 @@ func (p *POGO) run(name string, tcpAddress string, udpAddress string) {
 			// fmt.Println("Finito")
 			return
 		}
-
+		// fmt.Println("wait")
+		// fmt.Println("all done, next iteration inside the loops")
 		// if !p.over {
-
 		// }
-
 		// Perform actions needed when an update is received
-
 		// break
 	}
 

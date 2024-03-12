@@ -44,7 +44,13 @@ func multicast(addr *net.UDPAddr, mem *MEMORY) {
 				return
 
 			}
-			return
+
+			mem.winnerMux.Lock()
+			flush(mem)
+			mem.winner = "NULL"
+			mem.winnerMux.Unlock()
+			// fmt.Println("Nuevo Juego")
+			time.Sleep(10 * time.Second)
 		}
 
 		// fmt.Println("Sent multicast message:", mem.winner)

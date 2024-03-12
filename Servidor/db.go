@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net"
-	"strconv"
 )
 
 func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
@@ -25,14 +24,14 @@ func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
 }
 
 func addPoint(ipAddress string, mem *MEMORY) {
-	// mem.pointMux.Lock()
+	mem.pointMux.Lock()
 	if !mem.gotPoint {
 		mem.gotPoint = true
 		player, ok := mem.jugadores[ipAddress]
 		if ok {
 			player.score += 1
 			mem.jugadores[ipAddress] = player
-			fmt.Println("Player: " + player.nombre + " got the point" + player.ipAddress + " - " + strconv.Itoa(mem.jugadores[ipAddress].score))
+			// fmt.Println("Player: " + player.nombre + " got the point" + player.ipAddress + " - " + strconv.Itoa(mem.jugadores[ipAddress].score))
 			// message = fmt.Sprintf("%v", player.score)
 
 		} else {
@@ -40,14 +39,14 @@ func addPoint(ipAddress string, mem *MEMORY) {
 		}
 	}
 
-	// mem.pointMux.Unlock()
+	mem.pointMux.Unlock()
 
 }
 
-// func winAndFlush() {
-
-// }
-
-// func removePlayer(mem *MEMORY) {
-
-// }
+func flush(mem *MEMORY) {
+	for key := range mem.jugadores {
+		mem.jugadores[key].conn.Close()
+		delete(mem.jugadores, key)
+	}
+	// fmt.Println((mem.jugadores))
+}
