@@ -25,7 +25,7 @@ func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
 }
 
 func addPoint(ipAddress string, mem *MEMORY) {
-	mem.pointMux.Lock()
+	// mem.pointMux.Lock()
 	if !mem.gotPoint {
 		mem.gotPoint = true
 		player, ok := mem.jugadores[ipAddress]
@@ -40,7 +40,7 @@ func addPoint(ipAddress string, mem *MEMORY) {
 		}
 	}
 
-	mem.pointMux.Unlock()
+	// mem.pointMux.Unlock()
 
 }
 

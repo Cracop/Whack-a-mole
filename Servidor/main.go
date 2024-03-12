@@ -25,7 +25,7 @@ func main() {
 		// over: make(chan bool),
 	}
 
-	PortTCP := ":49999"
+	PortTCP := ":5050"
 	multicastAddr := "224.0.0.1:9999"
 
 	tcpListener, err := net.Listen("tcp4", PortTCP)

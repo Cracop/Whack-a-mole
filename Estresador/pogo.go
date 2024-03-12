@@ -29,7 +29,7 @@ func (p *POGO) login() {
 
 	message := fmt.Sprintf("r/%s", p.name)
 	p.TCPconn.Write([]byte(message))
-	fmt.Println("TCP package sent:", message)
+	// fmt.Println("TCP package sent:", message)
 }
 
 func (p *POGO) logout() {
@@ -83,6 +83,7 @@ func (p *POGO) whack() {
 	// fmt.Println("Ya lo mandé y ahora lo voy a leer")
 
 	_, err := p.TCPconn.Write([]byte(message))
+	start := time.Now()
 	if err != nil {
 		// fmt.Println("Error writing:", err)
 		return
@@ -94,7 +95,9 @@ func (p *POGO) whack() {
 		// fmt.Println("Error reading:", err)
 		return
 	}
-
+	elapsed := time.Since(start)
+	seconds := elapsed.Seconds()
+	fmt.Println("Time elapsed in seconds:", seconds)
 	// receivedData := string(p.buffer[:n])
 	// fmt.Println(receivedData)
 

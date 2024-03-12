@@ -6,7 +6,8 @@ import (
 
 func main() {
 
-	tcpAddress := "127.0.0.1:49999"
+	// tcpAddress := "10.10.1.190:5050"
+	tcpAddress := "127.0.0.1:5050"
 	udpAddress := "224.0.0.1:9999"
 	baseName := "POGO"
 

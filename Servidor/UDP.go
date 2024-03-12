@@ -26,14 +26,14 @@ func multicast(addr *net.UDPAddr, mem *MEMORY) {
 			mole := rand.IntN(9) // Generates a random number between 0 and 8
 			// message := "Hello from UDP multicast! " + strconv.Itoa(mole)
 			message := strconv.Itoa(mole)
-			mem.pointMux.Lock()
+			// mem.pointMux.Lock()
 			mem.gotPoint = false
 			_, err := conn.Write([]byte(message))
 			if err != nil {
 				fmt.Println("Error sending multicast packet:", err)
 				return
 			}
-			mem.pointMux.Unlock()
+			// mem.pointMux.Unlock()
 			time.Sleep(3 * time.Second)
 		} else {
 			fmt.Println("Ganador:", mem.winner)
