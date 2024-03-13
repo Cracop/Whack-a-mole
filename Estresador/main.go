@@ -18,13 +18,13 @@ func main() {
 	var wg2 sync.WaitGroup
 
 	// n := 10000
-	respuesta_juego := [][]float64{}
-	respuesta_registro := [][]float64{}
 
 	maxClients := 500
 
-	for i := 50; i <= maxClients; i = i + 50 {
-		for j := 0; j < 11; j++ {
+	for i := 300; i <= maxClients; i = i + 50 {
+		for j := 0; j < 10; j++ {
+			respuesta_juego := [][]float64{}
+			respuesta_registro := [][]float64{}
 			fmt.Println("Empieza nuevo juego")
 			for k := 0; k < i; k++ {
 				wg2.Add(1)

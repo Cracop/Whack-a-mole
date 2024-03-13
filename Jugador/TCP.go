@@ -22,8 +22,13 @@ func LoginTCP(c *CONNECTION) {
 	fmt.Println("TCP package sent:", message)
 }
 
-func whackTCP(c *CONNECTION, cell string) {
-	message := fmt.Sprintf("c/%s", cell)
+func whackTCP(c *CONNECTION, cell int) {
+	message := ""
+	if cell == c.cell {
+		message = "c/success"
+	} else {
+		message = "c/fail"
+	}
 	c.conn.Write([]byte(message))
 	fmt.Println("TCP package sent:", message)
 }

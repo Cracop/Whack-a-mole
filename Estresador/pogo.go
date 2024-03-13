@@ -73,7 +73,7 @@ func (p *POGO) joinMulticast() {
 		if p.monster[0] == 'w' {
 			// fmt.Println(p.monster)
 			p.over = true
-			time.Sleep(10 * time.Second)
+			time.Sleep(5 * time.Second)
 			return
 		}
 		// fmt.Println(p.monster)

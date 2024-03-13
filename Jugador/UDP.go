@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net"
+	"strconv"
 )
 
 func receiveUDP(c *CONNECTION) {
@@ -33,5 +34,9 @@ func receiveUDP(c *CONNECTION) {
 			return
 		}
 		fmt.Println("Received multicast message:", string(buffer[:n]))
+		monster, _ := strconv.Atoi(string(buffer[:n]))
+		c.start = true
+		c.monster <- monster
+		// fmt.Println(c.monster)
 	}
 }
