@@ -28,6 +28,7 @@ func main() {
 
 	PortTCP := ":5050"
 	multicastAddr := "224.0.0.1:9999"
+	// multicastAddr := "127.0.0.1:10000"
 
 	tcpListener, err := net.Listen("tcp4", PortTCP)
 	if err != nil {

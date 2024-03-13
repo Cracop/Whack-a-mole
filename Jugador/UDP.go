@@ -9,6 +9,7 @@ import (
 func receiveUDP(c *CONNECTION) {
 	// Multicast address and port
 	multicastAddr := "224.0.0.1:9999"
+	// multicastAddr := "127.0.0.1:10000"
 
 	// Resolve multicast address
 	addr, err := net.ResolveUDPAddr("udp", multicastAddr)

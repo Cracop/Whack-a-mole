@@ -19,9 +19,9 @@ func main() {
 
 	// n := 10000
 
-	maxClients := 500
+	maxClients := 50
 
-	for i := 300; i <= maxClients; i = i + 50 {
+	for i := 50; i <= maxClients; i = i + 50 {
 		for j := 0; j < 10; j++ {
 			respuesta_juego := [][]float64{}
 			respuesta_registro := [][]float64{}
