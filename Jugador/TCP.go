@@ -20,10 +20,27 @@ func LoginTCP(c *CONNECTION) {
 	message := fmt.Sprintf("r/%s", c.nombre)
 	c.conn.Write([]byte(message))
 	fmt.Println("TCP package sent:", message)
+	buffer := make([]byte, 1024)
+	n, err := c.conn.Read(buffer)
+	if err != nil {
+		fmt.Println("Error reading from TCP connection:", err)
+		return
+	}
+
+	// Convert the byte slice to a string
+	message = string(buffer[:n])
+	// c.multAddress = message
+	fmt.Println(message)
+	go receiveUDP(c, message)
 }
 
-func whackTCP(c *CONNECTION, cell string) {
-	message := fmt.Sprintf("c/%s", cell)
+func whackTCP(c *CONNECTION, cell int) {
+	message := ""
+	if cell == c.cell {
+		message = "c/success"
+	} else {
+		message = "c/fail"
+	}
 	c.conn.Write([]byte(message))
 	fmt.Println("TCP package sent:", message)
 }

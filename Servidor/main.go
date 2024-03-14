@@ -6,36 +6,53 @@ import (
 	"sync"
 )
 
-var (
-	jugadores    = make(map[string]PLAYER)
-	jugadoresMux sync.Mutex
-)
+type MEMORY struct {
+	jugadores     map[string]PLAYER
+	jugadoresMux  sync.Mutex
+	gotPoint      bool
+	pointMux      sync.Mutex
+	winnerMux     sync.Mutex
+	winner        string
+	multicastAddr string
+}
 
 func main() {
 
-	PortTCP := ":49999"
-	multicastAddr := "224.0.0.1:9999"
+	mem := MEMORY{
+		jugadores:     make(map[string]PLAYER),
+		gotPoint:      false,
+		jugadoresMux:  sync.Mutex{},
+		pointMux:      sync.Mutex{},
+		winner:        "NULL",
+		multicastAddr: "224.0.0.1:9999",
+
+		// over: make(chan bool),
+	}
+
+	PortTCP := ":5050"
+	// multicastAddr := "224.0.0.1:9999"
+	// multicastAddr := "127.0.0.1:10000"
 
 	tcpListener, err := net.Listen("tcp4", PortTCP)
 	if err != nil {
 		panic(err)
 	}
 
-	defer tcpListener.Close()
+	// defer tcpListener.Close()
 
 	fmt.Println("Server listening in port", PortTCP)
 
-	go handleTCPConnections(tcpListener, &jugadoresMux, &jugadores)
-
 	// Resolve multicast address
-	addr, err := net.ResolveUDPAddr("udp", multicastAddr)
+	addr, err := net.ResolveUDPAddr("udp", mem.multicastAddr)
 	if err != nil {
 		fmt.Println("Error resolving multicast address:", err)
 		return
 	}
 
-	go multicast(addr)
+	go multicast(addr, &mem)
 
-	// Block main goroutine to keep server running
-	select {}
+	handleTCPConnections(tcpListener, &mem)
+
+	// // Block main goroutine to keep server running
+	// select {}
 }

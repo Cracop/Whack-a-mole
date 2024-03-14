@@ -36,12 +36,10 @@ func makeLoginGUI(app fyne.App, c *CONNECTION) {
 		c.puerto = puertoEntry.Text
 		c.nombre = nombreEntry.Text
 
+		makeGameGUI(app, c)
 		if c.conn == nil {
 			LoginTCP(c)
-			go receiveUDP(c)
 		}
-
-		makeGameGUI(app, c)
 
 		w.Close()
 	})
