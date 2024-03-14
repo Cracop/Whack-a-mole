@@ -77,6 +77,8 @@ func /*(g *GUI)*/ makeGameGUI(app fyne.App, c *CONNECTION) /*GUI*/ {
 	w := app.NewWindow("Client")
 	g.buildButtons(c) // Build buttons
 	exitBTN := widget.NewButton("Exit", func() {
+		c.conn.Close()
+		c.conn = nil
 		makeLoginGUI(app, c)
 		w.Close()
 	})

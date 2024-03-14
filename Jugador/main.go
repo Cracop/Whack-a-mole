@@ -16,7 +16,7 @@ func main() {
 	// w := a.NewWindow("VistaJugador")
 	// client := CLIENT{}
 	c := CONNECTION{}
-	c.monster = make(chan int, 10)
+	c.monster = make(chan int)
 	c.start = false
 
 	//TODO: hacer que el custom theme funcione

@@ -7,27 +7,30 @@ import (
 )
 
 type MEMORY struct {
-	jugadores    map[string]PLAYER
-	jugadoresMux sync.Mutex
-	gotPoint     bool
-	pointMux     sync.Mutex
-	winnerMux    sync.Mutex
-	winner       string
+	jugadores     map[string]PLAYER
+	jugadoresMux  sync.Mutex
+	gotPoint      bool
+	pointMux      sync.Mutex
+	winnerMux     sync.Mutex
+	winner        string
+	multicastAddr string
 }
 
 func main() {
 
 	mem := MEMORY{
-		jugadores:    make(map[string]PLAYER),
-		gotPoint:     false,
-		jugadoresMux: sync.Mutex{},
-		pointMux:     sync.Mutex{},
-		winner:       "NULL",
+		jugadores:     make(map[string]PLAYER),
+		gotPoint:      false,
+		jugadoresMux:  sync.Mutex{},
+		pointMux:      sync.Mutex{},
+		winner:        "NULL",
+		multicastAddr: "224.0.0.1:9999",
+
 		// over: make(chan bool),
 	}
 
 	PortTCP := ":5050"
-	multicastAddr := "224.0.0.1:9999"
+	// multicastAddr := "224.0.0.1:9999"
 	// multicastAddr := "127.0.0.1:10000"
 
 	tcpListener, err := net.Listen("tcp4", PortTCP)
@@ -40,7 +43,7 @@ func main() {
 	fmt.Println("Server listening in port", PortTCP)
 
 	// Resolve multicast address
-	addr, err := net.ResolveUDPAddr("udp", multicastAddr)
+	addr, err := net.ResolveUDPAddr("udp", mem.multicastAddr)
 	if err != nil {
 		fmt.Println("Error resolving multicast address:", err)
 		return

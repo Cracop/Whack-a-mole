@@ -35,6 +35,7 @@ func multicast(addr *net.UDPAddr, mem *MEMORY) {
 			}
 			// mem.pointMux.Unlock()
 			time.Sleep(3 * time.Second)
+			fmt.Println(mem.jugadores)
 		} else {
 			fmt.Println("Ganador:", mem.winner)
 			message := "w/" + mem.winner

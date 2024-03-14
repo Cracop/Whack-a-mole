@@ -39,7 +39,6 @@ func makeLoginGUI(app fyne.App, c *CONNECTION) {
 		makeGameGUI(app, c)
 		if c.conn == nil {
 			LoginTCP(c)
-			go receiveUDP(c)
 		}
 
 		w.Close()

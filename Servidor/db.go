@@ -3,24 +3,35 @@ package main
 import (
 	"fmt"
 	"net"
+	"strconv"
 )
 
 func addPlayer(nombre string, ipAddress string, mem *MEMORY, conn *net.Conn) {
 
-	player := PLAYER{
-		conn:      *conn,
-		nombre:    nombre,
-		score:     0,
-		casilla:   10,
-		ipAddress: ipAddress,
+	mem.jugadoresMux.Lock()
+	defer mem.jugadoresMux.Unlock()
+
+	if player, exists := mem.jugadores[ipAddress]; exists {
+		player.conn = *conn
+		fmt.Println("Jugador Reconectado")
+	} else {
+		player := PLAYER{
+			conn:      *conn,
+			nombre:    nombre,
+			score:     0,
+			casilla:   10,
+			ipAddress: ipAddress,
+		}
+
+		(mem.jugadores)[ipAddress] = player
+		player.conn.Write([]byte(mem.multicastAddr))
+		fmt.Println("Nuevo jugador registrado")
 	}
 
-	mem.jugadoresMux.Lock()
-	(mem.jugadores)[ipAddress] = player
-	mem.jugadoresMux.Unlock()
-	// mapString := fmt.Sprintf("%v", mem.jugadores)
+	mapString := fmt.Sprintf("%v", mem.jugadores)
 
-	// fmt.Println(mapString)
+	fmt.Println(mapString)
+
 }
 
 func addPoint(ipAddress string, mem *MEMORY) {
@@ -31,7 +42,7 @@ func addPoint(ipAddress string, mem *MEMORY) {
 		if ok {
 			player.score += 1
 			mem.jugadores[ipAddress] = player
-			// fmt.Println("Player: " + player.nombre + " got the point" + player.ipAddress + " - " + strconv.Itoa(mem.jugadores[ipAddress].score))
+			fmt.Println("Player: " + player.nombre + " got the point" + player.ipAddress + " - " + strconv.Itoa(mem.jugadores[ipAddress].score))
 			// message = fmt.Sprintf("%v", player.score)
 
 		} else {
